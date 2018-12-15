@@ -8,6 +8,7 @@ import { AccountEntry } from '../models/accountEntry.model';
   styleUrls: ['./account-entry-list.component.scss']
 })
 export class AccountEntryListComponent implements OnInit {
+  displayedColumns: string[] = ['date', 'concept', 'amount'];
   accountEntries: AccountEntry[];
 
   constructor(private accountService: AccountService) { }
