@@ -29,4 +29,10 @@ export class AccountService {
   getAccountEntries(): AccountEntry[] {
     return accountEntries;
   }
+
+  addAccountEntry(newAccountEntry: AccountEntry): void {
+    const lastAccountEntry = accountEntries[accountEntries.length - 1];
+    newAccountEntry.id = lastAccountEntry.id + 1;
+    accountEntries.push(newAccountEntry);
+  }
 }

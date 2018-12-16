@@ -5,5 +5,7 @@
       shopping_cart
     </i> Welcome to {{ title }}!
   </h1>
-  <app-account-entry-list></app-account-entry-list>
+  <app-account-entry-list [accountEntries]="accountEntries"></app-account-entry-list>
+  <app-account-entry-form (accountEntryAdded)="accountEntryAddedHandler($event)"></app-account-entry-form>
+  <!-- <app-account-entry-form></app-account-entry-form> -->
 </div>
