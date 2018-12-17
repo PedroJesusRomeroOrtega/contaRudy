@@ -1,0 +1,12 @@
+<div >
+  <h1 style="text-align:center">
+    <i class="material-icons">
+      shopping_cart
+    </i> Welcome to {{ title }}!
+  </h1>
+  <app-account-entry-list [accountEntries]="accountEntries"></app-account-entry-list>
+  <!-- <app-account-entry-form (accountEntryAdded)="accountEntryAddedHandler($event)"></app-account-entry-form> -->
+  <button type="submit" mat-icon-button color="primary" [routerLink]="['/accounts/new']" >
+    <mat-icon aria-label="Add account entry">add_circle_outline</mat-icon>
+  </button>
+ </div> 
