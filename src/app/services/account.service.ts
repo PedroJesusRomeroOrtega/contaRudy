@@ -31,8 +31,21 @@ export class AccountService {
   }
 
   addAccountEntry(newAccountEntry: AccountEntry): void {
-    const lastAccountEntry = accountEntries[accountEntries.length - 1];
-    newAccountEntry.id = lastAccountEntry.id + 1;
+    newAccountEntry.id = this.nextID();
     accountEntries.push(newAccountEntry);
   }
+
+  deleteAccountEntry(accountEntryToDelete: AccountEntry): void {
+    if (accountEntryToDelete) {
+      // accountEntries = accountEntries.filter(ae => ae.id !== accountEntryToDelete.id);
+      const indexToDelete = accountEntries.findIndex(ae => ae.id === accountEntryToDelete.id);
+      accountEntries.splice(indexToDelete, 1);
+    }
+  }
+
+  private nextID(): number {
+    const lenghtAccountEntries = accountEntries.length || 0;
+    return ((lenghtAccountEntries > 0) ? accountEntries[lenghtAccountEntries - 1].id : 0) + 1;
+  }
+
 }

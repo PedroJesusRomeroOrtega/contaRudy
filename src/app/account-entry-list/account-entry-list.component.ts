@@ -14,10 +14,24 @@ export class AccountEntryListComponent implements OnInit {
   dataSourceAccountEntries: MatTableDataSource<AccountEntry>;
   @ViewChild(MatSort) sort: MatSort;
 
+  constructor(private accountService: AccountService) {
 
-  ngOnInit() {
+  }
+
+  ngOnInit(): void {
     this.displayedColumns = ['date', 'concept', 'amount', 'actions'];
     this.dataSourceAccountEntries = new MatTableDataSource(this.accountEntries);
+    this.dataSourceAccountEntries.sort = this.sort;
+  }
+
+  deleteItem(accountEntry): void {
+    this.accountService.deleteAccountEntry(accountEntry);
+    this.refresh();
+  }
+
+  private refresh(): void {
+    // this.dataSourceAccountEntries.filter='';
+    this.dataSourceAccountEntries.sort = null;
     this.dataSourceAccountEntries.sort = this.sort;
   }
 

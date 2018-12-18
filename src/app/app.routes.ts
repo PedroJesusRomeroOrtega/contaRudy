@@ -6,4 +6,5 @@ export const appRoutes: Routes = [
     { path: 'accounts', component: AccountEntryViewComponent },
     { path: 'accounts/new', component: AccountEntryFormComponent },
     { path: '', redirectTo: '/accounts', pathMatch: 'full' },
+    { path: '**', redirectTo: '/accounts' },
 ];
