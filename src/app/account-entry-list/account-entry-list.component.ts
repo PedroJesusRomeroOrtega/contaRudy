@@ -16,7 +16,7 @@ export class AccountEntryListComponent implements OnInit {
 
 
   ngOnInit() {
-    this.displayedColumns = ['date', 'concept', 'amount'];
+    this.displayedColumns = ['date', 'concept', 'amount', 'actions'];
     this.dataSourceAccountEntries = new MatTableDataSource(this.accountEntries);
     this.dataSourceAccountEntries.sort = this.sort;
   }
