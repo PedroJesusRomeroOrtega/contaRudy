@@ -1,7 +1,7 @@
 import { AccountService } from './../services/account.service';
 import { AccountEntry } from './../models/accountEntry.model';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-account-entry-form',
@@ -10,17 +10,30 @@ import { RouterLink, Router } from '@angular/router';
 })
 export class AccountEntryFormComponent implements OnInit {
   accountEntry: AccountEntry = <AccountEntry>{};
-  // @Output() accountEntryAdded: EventEmitter<any> = new EventEmitter();
 
   constructor(private accountService: AccountService,
+    private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit() {
+    // TODO: when i use observable, change to this approach.
+    // this.hero$ = this.route.paramMap.pipe(
+    //   switchMap((params: ParamMap) =>
+    //     this.service.getHero(params.get('id')))
+    // );
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.accountEntry = this.accountService.getAccountEntry(+id);
+    }
   }
 
   onSubmit(): void {
-    this.accountService.addAccountEntry(this.accountEntry);
-    // this.accountEntryAdded.emit();
+    if (this.accountEntry.id && this.accountEntry.id > 0) {
+      this.accountService.editAccountEntry(this.accountEntry);
+    } else {
+      this.accountService.addAccountEntry(this.accountEntry);
+    }
+
     this.router.navigate(['/accounts']);
   }
 }

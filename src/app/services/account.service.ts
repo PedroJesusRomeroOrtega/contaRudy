@@ -30,9 +30,20 @@ export class AccountService {
     return accountEntries;
   }
 
+  getAccountEntry(id: number): AccountEntry {
+    return accountEntries.find(ae => ae.id === id);
+  }
+
   addAccountEntry(newAccountEntry: AccountEntry): void {
     newAccountEntry.id = this.nextID();
     accountEntries.push(newAccountEntry);
+  }
+
+  editAccountEntry(editAccountEntry: AccountEntry): void {
+    const accountEntryInMemory = this.getAccountEntry(editAccountEntry.id);
+    accountEntryInMemory.date = editAccountEntry.date;
+    accountEntryInMemory.concept = editAccountEntry.concept;
+    accountEntryInMemory.amount = editAccountEntry.amount;
   }
 
   deleteAccountEntry(accountEntryToDelete: AccountEntry): void {
