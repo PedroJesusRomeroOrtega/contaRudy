@@ -266,6 +266,12 @@ Apache-2.0
 @angular/core
 MIT
 
+@angular/common
+MIT
+
+@angular/service-worker
+MIT
+
 @angular/animations
 MIT
 
@@ -293,9 +299,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-
-@angular/common
-MIT
 
 @angular/material
 MIT
@@ -344,9 +347,6 @@ MIT
 @angular/material/table
 
 @angular/material/form-field
-
-@angular/service-worker
-MIT
 
 zone.js
 MIT
