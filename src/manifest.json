@@ -5,7 +5,7 @@
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "/",
-  "start_url": "accounts/",
+  "start_url": "http://localhost:8080/",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
