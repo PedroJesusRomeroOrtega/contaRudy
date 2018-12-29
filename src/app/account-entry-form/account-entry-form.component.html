@@ -1,11 +1,11 @@
 <h3>
   Create account entry
 </h3>
-<form #AccountEntryForm="ngForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="accountEntryForm" (ngSubmit)="onSubmit()">
 
   <div>
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Choose a date" required [(ngModel)]="accountEntry.date" name="date">
+      <input matInput [matDatepicker]="picker" placeholder="Choose a date" required formControlName="date">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
@@ -13,15 +13,15 @@
 
   <div>
     <mat-form-field>
-      <input matInput placeholder="Concept" required [(ngModel)]="accountEntry.concept" name="concept">
+      <input matInput placeholder="Concept" required formControlName="concept">
     </mat-form-field>
   </div>
 
   <div>
     <mat-form-field>
-      <input type="number" matInput placeholder="Amount" required [(ngModel)]="accountEntry.amount" name="amount">
+      <input type="number" matInput placeholder="Amount" required formControlName="amount">
     </mat-form-field>
   </div>
 
-  <button type="submit" [disabled]="!AccountEntryForm.form.valid" mat-stroked-button>save</button>
+  <button type="submit" [disabled]="!accountEntryForm.valid" mat-stroked-button>save</button>
 </form>
