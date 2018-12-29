@@ -6,10 +6,10 @@ import { AccountEntryViewComponent } from './account-entry-view/account-entry-vi
 import { AccountEntryFormComponent } from './account-entry-form/account-entry-form.component';
 
 const appRoutes: Routes = [
-  { path: 'accounts', component: AccountEntryViewComponent },
-  { path: 'accounts/new', component: AccountEntryFormComponent },
-  { path: 'accounts/edit/:id', component: AccountEntryFormComponent },
-  { path: '', redirectTo: '/accounts', pathMatch: 'full' },
+  { path: '', component: AccountEntryViewComponent },
+  { path: 'new', component: AccountEntryFormComponent },
+  { path: 'edit/:id', component: AccountEntryFormComponent },
+  // { path: '', redirectTo: '/accounts', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
 

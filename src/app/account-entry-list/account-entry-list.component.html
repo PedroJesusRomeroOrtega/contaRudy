@@ -17,13 +17,13 @@
     <!-- actions -->
     <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>
-            <button mat-icon-button color="primary" [routerLink]="['/accounts/new']">
+            <button mat-icon-button color="primary" [routerLink]="['new']">
                 <mat-icon aria-label="Add account entry">add_circle_outline</mat-icon>
             </button>
         </mat-header-cell>
 
         <mat-cell *matCellDef="let accountEntry; let i=index;">
-            <button mat-icon-button color="accent" [routerLink]="['/accounts/edit', accountEntry.id]">
+            <button mat-icon-button color="accent" [routerLink]="['edit', accountEntry.id]">
                 <mat-icon aria-label="Edit">edit</mat-icon>
             </button>
 

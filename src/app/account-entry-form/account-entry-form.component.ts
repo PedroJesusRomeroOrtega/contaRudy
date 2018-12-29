@@ -34,6 +34,6 @@ export class AccountEntryFormComponent implements OnInit {
       this.accountService.addAccountEntry(this.accountEntry);
     }
 
-    this.router.navigate(['/accounts']);
+    this.router.navigate(['/']);
   }
 }
