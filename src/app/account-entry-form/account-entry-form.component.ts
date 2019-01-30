@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { AccountService } from './../services/account.service';
 import { AccountEntry } from './../models/accountEntry.model';
@@ -10,9 +12,11 @@ import { AccountEntry } from './../models/accountEntry.model';
   templateUrl: './account-entry-form.component.html',
   styleUrls: ['./account-entry-form.component.scss']
 })
-export class AccountEntryFormComponent implements OnInit {
+export class AccountEntryFormComponent implements OnInit, OnDestroy {
   accountEntry: AccountEntry = <AccountEntry>{};
-  accountEntryForm: FormGroup;
+  accountEntryForm: FormGroup = this.fb.group({});
+  isDirty = false;
+  private _destroyed$ = new Subject();
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -26,10 +30,12 @@ export class AccountEntryFormComponent implements OnInit {
     //     this.service.getHero(params.get('id')))
     // );
     const id = this.route.snapshot.paramMap.get('id');
-    this.createForm(+id);
+    this.createForm(<number | null>id);
+    this.onChanges();
   }
 
   onSubmit(): void {
+    this.isDirty = false;
     const accountEntry = this.mapper(this.accountEntryForm.value);
     if (accountEntry.id && accountEntry.id > 0) {
       this.accountService.editAccountEntry(accountEntry);
@@ -40,7 +46,12 @@ export class AccountEntryFormComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  private createForm(id: number): void {
+  ngOnDestroy(): void {
+    this._destroyed$.next();
+    this._destroyed$.complete();
+  }
+
+  private createForm(id: number | null): void {
     if (id && id > 0) {
       this.accountEntry = this.accountService.getAccountEntry(+id);
       this.accountEntryForm = this.fb.group({
@@ -63,4 +74,13 @@ export class AccountEntryFormComponent implements OnInit {
     this.accountEntry.amount = formValues.amount;
     return this.accountEntry;
   }
+
+  private onChanges(): void {
+    this.accountEntryForm.valueChanges.pipe(takeUntil(this._destroyed$)).subscribe(val => {
+      if (!this.isDirty) {
+        this.isDirty = true;
+      }
+    });
+  }
+
 }

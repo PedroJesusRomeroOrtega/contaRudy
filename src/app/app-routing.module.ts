@@ -6,11 +6,12 @@ import { AccountEntryViewComponent } from './account-entry-view/account-entry-vi
 import { AccountEntryFormComponent } from './account-entry-form/account-entry-form.component';
 import { ElementNotFoundComponent } from './common/element-not-found/element-not-found.component';
 import { ExistAccountEntryGuard } from './account-entry/exist-account-entry.guard';
+import { CHECKDIRTY_TOKEN } from './services/checkDirty.service';
 
 const appRoutes: Routes = [
   { path: '', component: AccountEntryViewComponent },
-  { path: 'new', component: AccountEntryFormComponent },
-  { path: 'edit/:id', component: AccountEntryFormComponent, canActivate: [ExistAccountEntryGuard] },
+  { path: 'new', component: AccountEntryFormComponent, canDeactivate: [CHECKDIRTY_TOKEN] },
+  { path: 'edit/:id', component: AccountEntryFormComponent, canActivate: [ExistAccountEntryGuard], canDeactivate: [CHECKDIRTY_TOKEN] },
   { path: '404', component: ElementNotFoundComponent },
   // { path: '', redirectTo: '/accounts', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },

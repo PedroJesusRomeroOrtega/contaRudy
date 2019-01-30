@@ -13,6 +13,7 @@ import { AccountEntryViewComponent } from './account-entry-view/account-entry-vi
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ElementNotFoundComponent } from './common/element-not-found/element-not-found.component';
 import { ExistAccountEntryGuard } from './account-entry/exist-account-entry.guard';
+import { CHECKDIRTY_TOKEN, checkDirtyState } from './services/checkDirty.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,10 @@ import { ExistAccountEntryGuard } from './account-entry/exist-account-entry.guar
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
-  providers: [ExistAccountEntryGuard],
+  providers: [
+    ExistAccountEntryGuard,
+    { provide: CHECKDIRTY_TOKEN, useValue: checkDirtyState }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
