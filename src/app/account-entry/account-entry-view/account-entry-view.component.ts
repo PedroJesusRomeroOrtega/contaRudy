@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountEntry } from '../../models/accountEntry.model';
-import { AccountService } from '../../services/account.service';
+import { AccountService } from '../account.service';
 
 @Component({
   selector: 'app-account-entry-view',

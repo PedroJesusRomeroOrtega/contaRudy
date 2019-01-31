@@ -4,7 +4,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
-import { AccountService } from './../../services/account.service';
+import { AccountService } from '../account.service';
 import { AccountEntry } from './../../models/accountEntry.model';
 
 @Component({
@@ -62,6 +62,7 @@ export class AccountEntryFormComponent implements OnInit, OnDestroy {
     } else {
       this.accountEntryForm = this.fb.group({
         date: [new Date(), Validators.required],
+        // date: ['', Validators.required],
         concept: ['', Validators.required],
         amount: ['', Validators.required]
       });

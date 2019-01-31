@@ -6,7 +6,7 @@ import { AccountEntryViewComponent } from './account-entry/account-entry-view/ac
 import { AccountEntryFormComponent } from './account-entry/account-entry-form/account-entry-form.component';
 import { ElementNotFoundComponent } from './common/element-not-found/element-not-found.component';
 import { ExistAccountEntryGuard } from './account-entry/exist-account-entry.guard';
-import { CHECKDIRTY_TOKEN } from './services/checkDirty.service';
+import { CHECKDIRTY_TOKEN } from './account-entry/checkDirty.service';
 
 const appRoutes: Routes = [
   { path: '', component: AccountEntryViewComponent },

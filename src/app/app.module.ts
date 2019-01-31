@@ -13,7 +13,8 @@ import { AccountEntryViewComponent } from './account-entry/account-entry-view/ac
 import { PageNotFoundComponent } from './common/page-not-found/page-not-found.component';
 import { ElementNotFoundComponent } from './common/element-not-found/element-not-found.component';
 import { ExistAccountEntryGuard } from './account-entry/exist-account-entry.guard';
-import { CHECKDIRTY_TOKEN, checkDirtyState } from './services/checkDirty.service';
+import { CHECKDIRTY_TOKEN, checkDirtyState } from './account-entry/checkDirty.service';
+import { MAT_DATE_LOCALE } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { CHECKDIRTY_TOKEN, checkDirtyState } from './services/checkDirty.service
   ],
   providers: [
     ExistAccountEntryGuard,
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
     { provide: CHECKDIRTY_TOKEN, useValue: checkDirtyState }
   ],
   bootstrap: [AppComponent]

@@ -1,4 +1,4 @@
-import { AccountEntry } from './../models/accountEntry.model';
+import { AccountEntry } from '../models/accountEntry.model';
 import { Injectable } from '@angular/core';
 
 const accountEntries: AccountEntry[] = [
