@@ -7,9 +7,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
-import { AccountEntryListComponent } from './account-entry-list/account-entry-list.component';
-import { AccountEntryFormComponent } from './account-entry-form/account-entry-form.component';
-import { AccountEntryViewComponent } from './account-entry-view/account-entry-view.component';
+import { AccountEntryListComponent } from './account-entry/account-entry-list/account-entry-list.component';
+import { AccountEntryFormComponent } from './account-entry/account-entry-form/account-entry-form.component';
+import { AccountEntryViewComponent } from './account-entry/account-entry-view/account-entry-view.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ElementNotFoundComponent } from './common/element-not-found/element-not-found.component';
 import { ExistAccountEntryGuard } from './account-entry/exist-account-entry.guard';

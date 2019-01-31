@@ -4,8 +4,8 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
-import { AccountService } from './../services/account.service';
-import { AccountEntry } from './../models/accountEntry.model';
+import { AccountService } from './../../services/account.service';
+import { AccountEntry } from './../../models/accountEntry.model';
 
 @Component({
   selector: 'app-account-entry-form',
@@ -30,7 +30,7 @@ export class AccountEntryFormComponent implements OnInit, OnDestroy {
     //     this.service.getHero(params.get('id')))
     // );
     const id = this.route.snapshot.paramMap.get('id');
-    this.createForm(<number | null>id);
+    this.createForm(+id);
     this.onChanges();
   }
 
@@ -51,7 +51,7 @@ export class AccountEntryFormComponent implements OnInit, OnDestroy {
     this._destroyed$.complete();
   }
 
-  private createForm(id: number | null): void {
+  private createForm(id: number): void {
     if (id && id > 0) {
       this.accountEntry = this.accountService.getAccountEntry(+id);
       this.accountEntryForm = this.fb.group({

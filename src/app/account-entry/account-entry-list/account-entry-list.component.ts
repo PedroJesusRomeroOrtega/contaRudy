@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { AccountService } from '../services/account.service';
-import { AccountEntry } from '../models/accountEntry.model';
+import { AccountService } from '../../services/account.service';
+import { AccountEntry } from '../../models/accountEntry.model';
 import { MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({

@@ -1,5 +1,5 @@
-import { AccountEntryFormComponent } from './../account-entry-form/account-entry-form.component';
 import { InjectionToken } from '@angular/core';
+import { AccountEntryFormComponent } from '../account-entry/account-entry-form/account-entry-form.component';
 
 export let CHECKDIRTY_TOKEN = new InjectionToken('checkDirty');
 
