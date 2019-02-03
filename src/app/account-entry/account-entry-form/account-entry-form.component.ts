@@ -56,14 +56,14 @@ export class AccountEntryFormComponent implements OnInit, OnDestroy {
       this.accountEntry = this.accountService.getAccountEntry(+id);
       this.accountEntryForm = this.fb.group({
         date: [this.accountEntry.date, Validators.required],
-        concept: [this.accountEntry.concept, Validators.required],
+        concept: [this.accountEntry.concept, [Validators.required, Validators.maxLength(250)]],
         amount: [this.accountEntry.amount, Validators.required]
       });
     } else {
       this.accountEntryForm = this.fb.group({
         date: [new Date(), Validators.required],
         // date: ['', Validators.required],
-        concept: ['', Validators.required],
+        concept: ['', [Validators.required, Validators.maxLength(250)]],
         amount: ['', Validators.required]
       });
     }
