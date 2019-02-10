@@ -1,7 +1,7 @@
 const AccountEntry = require('../models/accountEntry.model');
 
 exports.accountEntry_create = function (req, res) {
-    let accountEntry = new AccountEntry(
+    const accountEntry = new AccountEntry(
         {
             id: req.body.id,
             date: req.body.date,
