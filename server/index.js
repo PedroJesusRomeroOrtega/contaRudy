@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api/accountEntries', accountEntry);
 
-const port = process.env.PORT || 1234;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`Server is up and running on port numner ${port}`);
