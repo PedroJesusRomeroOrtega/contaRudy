@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const AccountEntrySchema = new Schema({
-    id: {type: Number, required: true},
     date: {type: Date, required: true},
     concept: {type: String, required:true, max: 250},
     amount: {type: Number,required:true},

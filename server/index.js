@@ -10,7 +10,8 @@ const app = express();
 // Set up mongoose connection
 const mongoose = require('mongoose');
 const dev_db_url = 'mongodb://someuser:abcd1234@ds123619.mlab.com:23619/productstutorial'; //link from mlab
-const mongoDB = (process.env.MONGODB_URI ? `${process.env.MONGODB_URI}/contaRudy` : dev_db_url);
+// const mongoDB = (process.env.MONGODB_URI ? `${process.env.MONGODB_URI}/contaRudy` : dev_db_url);
+const mongoDB = (process.env.MONGODB_URI ? `${process.env.MONGODB_URI}` : dev_db_url);
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;

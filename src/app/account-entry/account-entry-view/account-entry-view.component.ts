@@ -1,27 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountEntry } from '../../models/accountEntry.model';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AccountEntry } from '../models/accountEntry.model';
 import { AccountService } from '../account.service';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account-entry-view',
   templateUrl: './account-entry-view.component.html',
-  styleUrls: ['./account-entry-view.component.scss']
+  styleUrls: ['./account-entry-view.component.scss'],
 })
-export class AccountEntryViewComponent implements OnInit {
+export class AccountEntryViewComponent implements OnInit, OnDestroy {
   title = 'contaRudy';
   accountEntries: AccountEntry[];
+  private _destroyed$ = new Subject();
 
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
     this.loadAccountEntries();
   }
 
-  accountEntryAddedHandler($event: any) {
+  ngOnDestroy(): void {
+    this._destroyed$.next();
+    this._destroyed$.complete();
+  }
+
+  accountEntryDeletedHandler($event: any) {
     this.loadAccountEntries();
   }
 
   private loadAccountEntries(): void {
-    this.accountEntries = this.accountService.getAccountEntries();
+    this.accountService
+      .getAccountEntries()
+      .pipe(takeUntil(this._destroyed$))
+      .subscribe((accountEntries) => (this.accountEntries = accountEntries));
   }
 }

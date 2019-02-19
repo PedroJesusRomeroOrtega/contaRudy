@@ -1,62 +1,72 @@
-import { AccountEntry } from '../models/accountEntry.model';
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-const accountEntries: AccountEntry[] = [
-  {
-    id: 1,
-    date: new Date('13 September 1985'),
-    concept: 'primer pago',
-    amount: 45,
-  },
-  {
-    id: 2,
-    date: new Date('15 September 1985'),
-    concept: 'segundo pago',
-    amount: 50,
-  },
-  {
-    id: 3,
-    date: new Date('25 September 1985'),
-    concept: 'tercer pago',
-    amount: 56,
-  },
-];
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+
+import { HttpErrorHandler, HandleError } from '../core/http-error-handler.service';
+import { AccountEntry, AccountEntryDB } from './models';
+
+// TODO: look at authorization
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    Authorization: 'my-auth-token',
+  }),
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
-  getAccountEntries(): AccountEntry[] {
-    return accountEntries;
+  private handleError: HandleError;
+
+  constructor(private http: HttpClient, httpErrorHandler: HttpErrorHandler) {
+    this.handleError = httpErrorHandler.createHandleError('AccountService');
   }
 
-  getAccountEntry(id: number): AccountEntry {
-    return accountEntries.find(ae => ae.id === id);
+  getAccountEntries(): Observable<AccountEntry[]> {
+    return this.http.get<AccountEntryDB[]>('/api/accountEntries').pipe(
+      map((accountEntriesDB) => this.mapperAll(accountEntriesDB)),
+      catchError(this.handleError('getAccountEntries', [])),
+    );
   }
 
-  addAccountEntry(newAccountEntry: AccountEntry): void {
-    newAccountEntry.id = this.nextID();
-    accountEntries.push(newAccountEntry);
+  getAccountEntry(id: string): Observable<AccountEntry> {
+    return this.http.get<AccountEntryDB>(`/api/accountEntries/${id}`).pipe(
+      map((accountEntryDB) => this.mapperOne(accountEntryDB)),
+      catchError(this.handleError<AccountEntry>('getAccountEntry')),
+    );
   }
 
-  editAccountEntry(editAccountEntry: AccountEntry): void {
-    const accountEntryInMemory = this.getAccountEntry(editAccountEntry.id);
-    accountEntryInMemory.date = editAccountEntry.date;
-    accountEntryInMemory.concept = editAccountEntry.concept;
-    accountEntryInMemory.amount = editAccountEntry.amount;
+  addAccountEntry(newAccountEntry: AccountEntry): Observable<AccountEntry> {
+    return this.http
+      .post<AccountEntry>('/api/accountEntries/', newAccountEntry, httpOptions)
+      .pipe(catchError(this.handleError('addAccountEntry', newAccountEntry)));
   }
 
-  deleteAccountEntry(accountEntryToDelete: AccountEntry): void {
-    if (accountEntryToDelete) {
-      // accountEntries = accountEntries.filter(ae => ae.id !== accountEntryToDelete.id);
-      const indexToDelete = accountEntries.findIndex(ae => ae.id === accountEntryToDelete.id);
-      accountEntries.splice(indexToDelete, 1);
-    }
+  updateAccountEntry(editAccountEntry: AccountEntry): Observable<AccountEntry> {
+    httpOptions.headers = httpOptions.headers.set('Authorization', 'my-new-auth-token');
+
+    return this.http
+      .put<AccountEntry>(`/api/accountEntries/${editAccountEntry.id}`, editAccountEntry, httpOptions)
+      .pipe(catchError(this.handleError('updateAccountEntry', editAccountEntry)));
   }
 
-  private nextID(): number {
-    const lenghtAccountEntries = accountEntries.length || 0;
-    return ((lenghtAccountEntries > 0) ? accountEntries[lenghtAccountEntries - 1].id : 0) + 1;
+  deleteAccountEntry(id: string): Observable<{}> {
+    return this.http
+      .delete(`/api/accountEntries/${id}`, httpOptions)
+      .pipe(catchError(this.handleError('deleteAccountEntry')));
   }
 
+  private mapperAll = (accountEntriesDB: AccountEntryDB[]): AccountEntry[] =>
+    accountEntriesDB.map((aesdb) => this.mapperOne(aesdb));
+
+  private mapperOne = (accountEntryDB: AccountEntryDB): AccountEntry =>
+    <AccountEntry>{
+      id: accountEntryDB._id,
+      date: accountEntryDB.date,
+      concept: accountEntryDB.concept,
+      amount: accountEntryDB.amount,
+    };
 }

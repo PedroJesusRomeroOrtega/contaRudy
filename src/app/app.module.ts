@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AccountEntryListComponent } from './account-entry/account-entry-list/account-entry-list.component';
@@ -28,6 +29,7 @@ import { MAT_DATE_LOCALE } from '@angular/material';
   imports: [
     BrowserModule,
     FormsModule, // TODO: REMOVE FORMS MULE
+    HttpClientModule,
     ReactiveFormsModule,
     MaterialModule,
     AppRoutingModule,

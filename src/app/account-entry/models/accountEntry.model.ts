@@ -1,5 +1,5 @@
 export interface AccountEntry {
-  id: number;
+  id: string;
   date: Date;
   concept: string;
   amount: number;

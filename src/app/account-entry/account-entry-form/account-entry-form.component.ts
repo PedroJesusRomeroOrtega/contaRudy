@@ -5,12 +5,12 @@ import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
 import { AccountService } from '../account.service';
-import { AccountEntry } from './../../models/accountEntry.model';
+import { AccountEntry } from '../models/accountEntry.model';
 
 @Component({
   selector: 'app-account-entry-form',
   templateUrl: './account-entry-form.component.html',
-  styleUrls: ['./account-entry-form.component.scss']
+  styleUrls: ['./account-entry-form.component.scss'],
 })
 export class AccountEntryFormComponent implements OnInit, OnDestroy {
   accountEntry: AccountEntry = <AccountEntry>{};
@@ -18,10 +18,12 @@ export class AccountEntryFormComponent implements OnInit, OnDestroy {
   isDirty = false;
   private _destroyed$ = new Subject();
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private accountService: AccountService, ) { }
+    private accountService: AccountService,
+  ) {}
 
   ngOnInit() {
     // TODO: when i use observable, change to this approach.
@@ -30,20 +32,8 @@ export class AccountEntryFormComponent implements OnInit, OnDestroy {
     //     this.service.getHero(params.get('id')))
     // );
     const id = this.route.snapshot.paramMap.get('id');
-    this.createForm(+id);
+    this.createForm(id);
     this.onChanges();
-  }
-
-  onSubmit(): void {
-    this.isDirty = false;
-    const accountEntry = this.mapper(this.accountEntryForm.value);
-    if (accountEntry.id && accountEntry.id > 0) {
-      this.accountService.editAccountEntry(accountEntry);
-    } else {
-      this.accountService.addAccountEntry(accountEntry);
-    }
-
-    this.router.navigate(['/']);
   }
 
   ngOnDestroy(): void {
@@ -51,21 +41,46 @@ export class AccountEntryFormComponent implements OnInit, OnDestroy {
     this._destroyed$.complete();
   }
 
-  private createForm(id: number): void {
-    if (id && id > 0) {
-      this.accountEntry = this.accountService.getAccountEntry(+id);
-      this.accountEntryForm = this.fb.group({
-        date: [this.accountEntry.date, Validators.required],
-        concept: [this.accountEntry.concept, [Validators.required, Validators.maxLength(250)]],
-        amount: [this.accountEntry.amount, Validators.required]
-      });
+  onSubmit(): void {
+    this.isDirty = false;
+    const accountEntry = this.mapper(this.accountEntryForm.value);
+    if (accountEntry.id) {
+      this.accountService
+        .updateAccountEntry(accountEntry)
+        .pipe(takeUntil(this._destroyed$))
+        .subscribe(() => this.goToList());
     } else {
-      this.accountEntryForm = this.fb.group({
-        date: [new Date(), Validators.required],
-        // date: ['', Validators.required],
-        concept: ['', [Validators.required, Validators.maxLength(250)]],
-        amount: ['', Validators.required]
-      });
+      this.accountService
+        .addAccountEntry(accountEntry)
+        .pipe(takeUntil(this._destroyed$))
+        .subscribe(() => this.goToList());
+    }
+  }
+
+  private goToList(): void {
+    this.router.navigate(['/']);
+  }
+
+  private createForm(id: string): void {
+    this.accountEntryForm = this.fb.group({
+      date: [new Date(), Validators.required],
+      // date: ['', Validators.required],
+      concept: ['', [Validators.required, Validators.maxLength(250)]],
+      amount: ['', Validators.required],
+    });
+
+    if (id) {
+      this.accountService
+        .getAccountEntry(id)
+        .pipe(takeUntil(this._destroyed$))
+        .subscribe((ae: AccountEntry) => {
+          this.accountEntry = ae;
+          this.accountEntryForm = this.fb.group({
+            date: [this.accountEntry.date, Validators.required],
+            concept: [this.accountEntry.concept, [Validators.required, Validators.maxLength(250)]],
+            amount: [this.accountEntry.amount, Validators.required],
+          });
+        });
     }
   }
 
@@ -77,11 +92,10 @@ export class AccountEntryFormComponent implements OnInit, OnDestroy {
   }
 
   private onChanges(): void {
-    this.accountEntryForm.valueChanges.pipe(takeUntil(this._destroyed$)).subscribe(val => {
+    this.accountEntryForm.valueChanges.pipe(takeUntil(this._destroyed$)).subscribe(() => {
       if (!this.isDirty) {
         this.isDirty = true;
       }
     });
   }
-
 }
