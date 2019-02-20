@@ -16,14 +16,14 @@ exports.accountEntry_create = function(req, res, next) {
   });
 };
 
-exports.accountEntry_details_all = function(req, res, next) {
+exports.accountEntry_get_all = function(req, res, next) {
   AccountEntry.find({}, function(err, accountEntries) {
     if (err) return next(err);
     res.send(accountEntries);
   });
 };
 
-exports.accountEntry_details = function(req, res, next) {
+exports.accountEntry_get = function(req, res, next) {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) res.send(null);
 
   AccountEntry.findById(req.params.id, function(err, accountEntry) {
