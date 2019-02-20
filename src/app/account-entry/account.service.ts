@@ -49,7 +49,11 @@ export class AccountService {
     httpOptions.headers = httpOptions.headers.set('Authorization', 'my-new-auth-token');
 
     return this.http
-      .put<AccountEntry>(`/api/accountEntries/${editAccountEntry.id}`, editAccountEntry, httpOptions)
+      .put<AccountEntry>(
+        `/api/accountEntries/${editAccountEntry.id}`,
+        editAccountEntry,
+        httpOptions,
+      )
       .pipe(catchError(this.handleError('updateAccountEntry', editAccountEntry)));
   }
 
@@ -62,11 +66,16 @@ export class AccountService {
   private mapperAll = (accountEntriesDB: AccountEntryDB[]): AccountEntry[] =>
     accountEntriesDB.map((aesdb) => this.mapperOne(aesdb));
 
-  private mapperOne = (accountEntryDB: AccountEntryDB): AccountEntry =>
-    <AccountEntry>{
-      id: accountEntryDB._id,
-      date: accountEntryDB.date,
-      concept: accountEntryDB.concept,
-      amount: accountEntryDB.amount,
-    };
+  private mapperOne(accountEntryDB: AccountEntryDB): AccountEntry {
+    if (!accountEntryDB) {
+      return null;
+    } else {
+      return <AccountEntry>{
+        id: accountEntryDB._id,
+        date: accountEntryDB.date,
+        concept: accountEntryDB.concept,
+        amount: accountEntryDB.amount,
+      };
+    }
+  }
 }
