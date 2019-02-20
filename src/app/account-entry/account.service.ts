@@ -6,6 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from '../core/http-error-handler.service';
 import { AccountEntry, AccountEntryDB } from './models';
+import { environment } from 'src/environments/environment.prod';
 
 // TODO: look at authorization
 const httpOptions = {
@@ -20,20 +21,21 @@ const httpOptions = {
 })
 export class AccountService {
   private handleError: HandleError;
+  private accountEntryUrl = `${environment.apiBase}/accountEntries`;
 
   constructor(private http: HttpClient, httpErrorHandler: HttpErrorHandler) {
     this.handleError = httpErrorHandler.createHandleError('AccountService');
   }
 
   getAccountEntries(): Observable<AccountEntry[]> {
-    return this.http.get<AccountEntryDB[]>('/api/accountEntries').pipe(
+    return this.http.get<AccountEntryDB[]>(this.accountEntryUrl).pipe(
       map((accountEntriesDB) => this.mapperAll(accountEntriesDB)),
       catchError(this.handleError('getAccountEntries', [])),
     );
   }
 
   getAccountEntry(id: string): Observable<AccountEntry> {
-    return this.http.get<AccountEntryDB>(`/api/accountEntries/${id}`).pipe(
+    return this.http.get<AccountEntryDB>(`${this.accountEntryUrl}/${id}`).pipe(
       map((accountEntryDB) => this.mapperOne(accountEntryDB)),
       catchError(this.handleError<AccountEntry>('getAccountEntry')),
     );
@@ -41,7 +43,7 @@ export class AccountService {
 
   addAccountEntry(newAccountEntry: AccountEntry): Observable<AccountEntry> {
     return this.http
-      .post<AccountEntry>('/api/accountEntries/', newAccountEntry, httpOptions)
+      .post<AccountEntry>(this.accountEntryUrl, newAccountEntry, httpOptions)
       .pipe(catchError(this.handleError('addAccountEntry', newAccountEntry)));
   }
 
@@ -50,7 +52,7 @@ export class AccountService {
 
     return this.http
       .put<AccountEntry>(
-        `/api/accountEntries/${editAccountEntry.id}`,
+        `${this.accountEntryUrl}/${editAccountEntry.id}`,
         editAccountEntry,
         httpOptions,
       )
@@ -59,7 +61,7 @@ export class AccountService {
 
   deleteAccountEntry(id: string): Observable<{}> {
     return this.http
-      .delete(`/api/accountEntries/${id}`, httpOptions)
+      .delete(`${this.accountEntryUrl}/${id}`, httpOptions)
       .pipe(catchError(this.handleError('deleteAccountEntry')));
   }
 
