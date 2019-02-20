@@ -28,7 +28,7 @@ export class AccountEntryListComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns: string[];
   dataSourceAccountEntries: MatTableDataSource<AccountEntry>;
-  private _destroyed$ = new Subject();
+  private _destroyed$: Subject<void> = new Subject();
   // accountEntries: AccountEntry[];
 
   constructor(private accountService: AccountService) {}

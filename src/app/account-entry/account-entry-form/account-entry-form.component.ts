@@ -16,7 +16,7 @@ export class AccountEntryFormComponent implements OnInit, OnDestroy {
   accountEntry: AccountEntry = <AccountEntry>{};
   accountEntryForm: FormGroup = this.fb.group({});
   isDirty = false;
-  private _destroyed$ = new Subject();
+  private _destroyed$: Subject<void> = new Subject();
 
   constructor(
     private route: ActivatedRoute,

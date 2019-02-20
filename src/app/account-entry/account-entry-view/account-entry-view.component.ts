@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 export class AccountEntryViewComponent implements OnInit, OnDestroy {
   title = 'contaRudy';
   accountEntries: AccountEntry[];
-  private _destroyed$ = new Subject();
+  private _destroyed$: Subject<void> = new Subject();
 
   constructor(private accountService: AccountService) {}
 
