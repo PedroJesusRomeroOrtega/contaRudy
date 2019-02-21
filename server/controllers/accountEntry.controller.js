@@ -12,7 +12,7 @@ exports.accountEntry_create = function(req, res, next) {
     if (err) {
       return next(err);
     }
-    res.send('Account entry created successfully');
+    res.json('Account entry created successfully');
   });
 };
 
@@ -37,7 +37,7 @@ exports.accountEntry_update = function(req, res, next) {
 
   AccountEntry.findByIdAndUpdate(req.params.id, { $set: req.body }, function(err, accountEntry) {
     if (err) return next(err);
-    res.send('Account entry udpated.');
+    res.json('Account entry udpated.');
   });
 };
 
@@ -46,6 +46,6 @@ exports.accountEntry_delete = function(req, res, next) {
 
   AccountEntry.findByIdAndRemove(req.params.id, function(err) {
     if (err) return next(err);
-    res.send('Deleted successfully!');
+    res.json('Deleted successfully!');
   });
 };
