@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start-server": "nodemon server/index.js",
+    "start-server": "nodemon -r dotenv/config server/app.js",
     "build": "ng build --es5BrowserSupport=false",
     "build-gh": "ng build --configuration=production-gh",
     "test": "ng test",
@@ -43,6 +43,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
+    "dotenv": "^6.2.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^4.0.0",
